@@ -4,6 +4,7 @@ using My1stWebAPIProject.Modules;
 using Newtonsoft.Json;
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml;
 
 namespace My1stWebAPIProject.Controllers
 {
@@ -19,7 +20,7 @@ namespace My1stWebAPIProject.Controllers
 
         [HttpGet]
         [Route("GetAllEmployee")]
-        public string GetEmp()
+        public IActionResult GetEmp()
         {
             SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EmpDB"));
             SqlDataAdapter da = new SqlDataAdapter("select * from employee", con);
@@ -45,13 +46,15 @@ namespace My1stWebAPIProject.Controllers
             }
             if (emplist.Count > 0)
             {
-                return JsonConvert.SerializeObject(emplist);
+                //return JsonConvert.SerializeObject(emplist);
+                return Ok(emplist);
             }
             else
             {
                 resp.StatusCode = 100;
                 resp.ErrorMsg = "Record not found!";
-                return JsonConvert.SerializeObject(resp);
+                //return JsonConvert.SerializeObject(resp);
+                return Ok(resp);
             }
         }
     }
